@@ -7,10 +7,10 @@ var camera, scene, renderer, clock;
 var upCamera;
 var prespCamera;
 
-var spotLight1;
-var spotLight2;
-var spotLight3;
-var spotLight4;
+const SPOTLIGHTS = 4;
+var spotLights = [];
+
+var sun;
 
 /*--------------------------------------------------------------------
 | Function: init
@@ -53,8 +53,7 @@ function animate(){
 ---------------------------------------------------------------------*/
 function render(){
 	'use strict';
-
-	renderer.render(scene, camera);
+	renderer.render(scene,camera);
 }
 
 /*--------------------------------------------------------------------
@@ -66,15 +65,46 @@ function createScene(){
 	scene = new THREE.Scene();
 	scene.add(new THREE.AxesHelper(210));
 
-	spotLight1 = new StadiumSpotlight(0  , 0, 0  , new THREE.Vector3(50, 0, 50) );
-	spotLight2 = new StadiumSpotlight(100, 0, 0  , new THREE.Vector3(50, 0, 50) );
-	spotLight3 = new StadiumSpotlight(0  , 0, 100, new THREE.Vector3(50, 0, 50) );
-	spotLight4 = new StadiumSpotlight(100, 0, 100, new THREE.Vector3(50, 0, 50) );
+	/* Remover no final */
+	var g = new THREE.PlaneGeometry(150, 150);
+	var m = new THREE.MeshBasicMaterial({color: 0x00aa99, side: THREE.DoubleSide});
+	var p = new THREE.Mesh(g, m);
+	p.position.set(50, 0, 50);
+	scene.add(p);
+	p.rotation.x += Math.PI/2;
+	/* ====================== */
 
-	scene.add(spotLight1);
-	scene.add(spotLight2);
-	scene.add(spotLight3);
-	scene.add(spotLight4);
+	createSpotlights(scene);
+	createSun(scene);
+}
+
+/*--------------------------------------------------------------------
+| Function: createSpotlights
+---------------------------------------------------------------------*/
+function createSpotlights(scene){
+	var spotLight;
+	spotLight = new StadiumSpotlight(0  , 0, 0  ,  Math.PI);
+	spotLights.push(spotLight);
+	spotLight = new StadiumSpotlight(100, 0, 0  ,  Math.PI/2);
+	spotLights.push(spotLight);
+	spotLight = new StadiumSpotlight(0  , 0, 100, -Math.PI/2);
+	spotLights.push(spotLight);
+	spotLight = new StadiumSpotlight(100, 0, 100,  0);
+	spotLights.push(spotLight);
+
+	for(var i = 0; i < SPOTLIGHTS; i++){
+		scene.add(spotLights[i]);
+	}
+}
+
+/*--------------------------------------------------------------------
+| Function: createSun
+---------------------------------------------------------------------*/
+function createSun(scene){
+	sun = new THREE.DirectionalLight(0xffffff, 0.5);
+	sun.position.set(1, 1, 0);
+
+	scene.add(sun);
 }
 
 /*--------------------------------------------------------------------
@@ -130,7 +160,7 @@ function createPrespCamera(){
 											  window.innerWidth / window.innerHeight,
 											  1,1000);
 
-	prespCamera.position.set(300, 300, 300);
+	prespCamera.position.set(200, 200, 200);
 	prespCamera.lookAt(50, 50, 50);
 }
 
@@ -158,11 +188,23 @@ function onKeyDown(e){
 
 	switch(e.keyCode){
 		case 49: //1
-			camera = upCamera;
+			spotLights[0].light.visible = !spotLights[0].light.visible;
 			break;
 
 		case 50: //2
-			camera = prespCamera;
+			spotLights[1].light.visible = !spotLights[1].light.visible;
+			break;
+
+		case 51: //3
+			spotLights[2].light.visible = !spotLights[2].light.visible;
+			break;
+
+		case 52: //4
+			spotLights[3].light.visible = !spotLights[3].light.visible;
+			break;
+
+		case 78: //n
+			sun.visible = !sun.visible;
 			break;
 	
 		case 65://A
