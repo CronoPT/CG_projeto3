@@ -40,7 +40,7 @@ class StadiumSpotlight extends THREE.Object3D{
     addTower(){
         'use strict';
 
-        var geometry = new THREE.SphereGeometry(6, 40, 40);
+        var geometry = new THREE.SphereGeometry(6, 50, 50);
         var material = new THREE.MeshPhongMaterial({color: 0x777777});
         material.specular    = new THREE.Color(0x111111);
         material.shininess   = 30;

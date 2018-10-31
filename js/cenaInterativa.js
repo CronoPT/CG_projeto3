@@ -66,14 +66,24 @@ function createScene(){
 	scene.add(new THREE.AxesHelper(210));
 
 	/* Remover no final */
-	var g = new THREE.PlaneGeometry(150, 150);
+	/*var geometry = new THREE.PlaneGeometry(150, 150, 100, 100);
 	var m = new THREE.MeshBasicMaterial({color: 0x00aa99, side: THREE.DoubleSide});
-	var p = new THREE.Mesh(g, m);
+	var p = new THREE.Mesh(geometry, m);
 	p.position.set(50, 0, 50);
 	scene.add(p);
 	p.rotation.x += Math.PI/2;
 	/* ====================== */
 
+	var geo = new TriangularPrism(150, 100, 200, 0.1);
+	var mat = new THREE.MeshPhongMaterial({color: 0xff0000, side: THREE.DoubleSide});
+	mat.specular    = new THREE.Color(0xff0000);
+	mat.shininess   = 30;
+	mat.flatShading = THREE.SmoothShading;
+	mat.needsUpdate = true;
+	geo.normalsNeedUpdate = true;
+	var pri = new THREE.Mesh(geo, mat);
+	scene.add(pri);
+	pri.rotation.y = Math.PI;
 	createSpotlights(scene);
 	createSun(scene);
 }
@@ -101,7 +111,7 @@ function createSpotlights(scene){
 | Function: createSun
 ---------------------------------------------------------------------*/
 function createSun(scene){
-	sun = new THREE.DirectionalLight(0xffffff, 0.5);
+	sun = new THREE.DirectionalLight(0xffffff, 0.7);
 	sun.position.set(1, 1, 0);
 
 	scene.add(sun);
