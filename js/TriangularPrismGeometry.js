@@ -1,4 +1,4 @@
-class TriangularPrism extends THREE.Geometry{
+class TriangularPrismGeometry extends THREE.Geometry{
     constructor(height, baseHeight, baseWidth, linearPointDensity){
         'use strict';
 
@@ -55,23 +55,43 @@ class TriangularPrism extends THREE.Geometry{
             thisLineLen++;
 
             this.vertices.push(newPoint);            
-
-            var i;
-            for(i = 0; i < lineBeforeLen && i+1 < thisLineLen; i++){
-                this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
-                                                thisLineIndexes[i],
-                                                thisLineIndexes[i+1]));
-                if(i != lineBeforeLen-1)
+            if( x == 0){ // CASE: left face
+                var i;
+                for(i = 0; i < lineBeforeLen && i+1 < thisLineLen; i++){
                     this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
-                                                    lineBeforeIndexes[i+1],
+                                                    thisLineIndexes[i],
                                                     thisLineIndexes[i+1]));
-            }
+                    if(i != lineBeforeLen-1)
+                        this.faces.push(new THREE.Face3(lineBeforeIndexes[i+1],
+                                                        lineBeforeIndexes[i],
+                                                        thisLineIndexes[i+1]));
+                }
 
-            var j;
-            for(j = thisLineLen-1; j>lineBeforeLen; j--){
-                this.faces.push(new THREE.Face3(lineBeforeIndexes[lineBeforeLen-1],
-                                                thisLineIndexes[j],
-                                                thisLineIndexes[j-1]));
+                var j;
+                for(j = thisLineLen-1; j>lineBeforeLen; j--){
+                    this.faces.push(new THREE.Face3(lineBeforeIndexes[lineBeforeLen-1],
+                                                    thisLineIndexes[j-1],
+                                                    thisLineIndexes[j]));
+                }
+            }
+            else{ // CASE: right face
+                var i;
+                for(i = 0; i < lineBeforeLen && i+1 < thisLineLen; i++){
+                    this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
+                                                    thisLineIndexes[i+1],
+                                                    thisLineIndexes[i]));
+                    if(i != lineBeforeLen-1)
+                        this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
+                                                        lineBeforeIndexes[i+1],
+                                                        thisLineIndexes[i+1]));
+                }
+
+                var j;
+                for(j = thisLineLen-1; j>lineBeforeLen; j--){
+                    this.faces.push(new THREE.Face3(lineBeforeIndexes[lineBeforeLen-1],
+                                                    thisLineIndexes[j],
+                                                    thisLineIndexes[j-1]));
+                }
             }
 
             lineBeforeIndexes = thisLineIndexes.slice();
@@ -151,8 +171,8 @@ class TriangularPrism extends THREE.Geometry{
                 this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
                                                 thisLineIndexes[i],
                                                 thisLineIndexes[i+1]));
-                this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
-                                                lineBeforeIndexes[i+1],
+                this.faces.push(new THREE.Face3(lineBeforeIndexes[i+1],
+                                                lineBeforeIndexes[i],
                                                 thisLineIndexes[i+1]));
             }
 
@@ -207,8 +227,8 @@ class TriangularPrism extends THREE.Geometry{
             var i;
             for(i = 0; i < lineBeforeLen-1; i++){
                 this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
-                                                thisLineIndexes[i],
-                                                thisLineIndexes[i+1]));
+                                                thisLineIndexes[i+1],
+                                                thisLineIndexes[i]));
                 this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
                                                 lineBeforeIndexes[i+1],
                                                 thisLineIndexes[i+1]));
@@ -265,8 +285,8 @@ class TriangularPrism extends THREE.Geometry{
             var i;
             for(i = 0; i < lineBeforeLen-1; i++){
                 this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
-                                                thisLineIndexes[i],
-                                                thisLineIndexes[i+1]));
+                                                thisLineIndexes[i+1],
+                                                thisLineIndexes[i]));
                 this.faces.push(new THREE.Face3(lineBeforeIndexes[i],
                                                 lineBeforeIndexes[i+1],
                                                 thisLineIndexes[i+1]));
