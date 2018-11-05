@@ -76,4 +76,10 @@ class StadiumSpotlight extends THREE.Object3D{
         this.light.castShadow = true;
         this.add(this.light);
     }
+
+    setTarget(object){
+        'use strict';
+
+        this.light.target = object;
+    }
 }

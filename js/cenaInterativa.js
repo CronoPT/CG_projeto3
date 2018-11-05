@@ -86,8 +86,8 @@ function createScene(){
 	scene.add(new THREE.AxesHelper(210));
 	
    /* ======================= */
-	createSpotlights(scene, threshold);
 	createPlane(scene, 130);
+	createSpotlights(scene, threshold);
 	createSun(scene);
 }
 
@@ -129,6 +129,7 @@ function createSpotlights(scene, threshold){
 
 	for(var i = 0; i < SPOTLIGHTS; i++){
 		scene.add(spotLights[i]);
+		spotLights[i].setTarget(plane);
 	}
 }
 
@@ -223,7 +224,7 @@ function createUpCamera(threshold){
 function onKeyDown(e){
 	'use strict';
 	var angleInc = Math.PI/8;
-//	console.log(e.keyCode);
+	
 	switch(e.keyCode){
 		case 37:
 			
